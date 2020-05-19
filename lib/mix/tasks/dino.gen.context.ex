@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
 
   @moduledoc """
   Generates a context with functions around an Ecto schema.
-      mix phx.gen.context Accounts User users name:string age:integer
+      mix dino.gen.context Accounts User users name:string age:integer
   The first argument is the context module followed by the schema module
   and its plural name (used as the schema table name).
   The context is an Elixir module that serves as an API boundary for
@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
   By default, the table name for the migration and schema will be
   the plural name provided for the resource. To customize this value,
   a `--table` option may be provided. For example:
-      mix phx.gen.context Accounts User users --table cms_users
+      mix dino.gen.context Accounts User users --table cms_users
   ## binary_id
   Generated migration can use `binary_id` for schema's primary key
   and its references with option `--binary-id`.
@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
   You can override those options per invocation by providing corresponding
   switches, e.g. `--no-binary-id` to use normal ids despite the default
   configuration or `--migration` to force generation of the migration.
-  Read the documentation for `phx.gen.schema` for more information on
+  Read the documentation for `dino.gen.schema` for more information on
   attributes.
   """
 
@@ -63,7 +63,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
 
     {context, schema} = build(args)
     binding = [context: context, schema: schema]
-    paths = Mix.Phoenix.generator_paths()
+    paths = Mix.Phoenix.generator_paths() ++ [:dino_tasks]
 
     prompt_for_conflicts(context)
     prompt_for_code_injection(context)
@@ -212,7 +212,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
   def raise_with_help(msg) do
     Mix.raise """
     #{msg}
-    mix phx.gen.html, phx.gen.json, phx.gen.live, and phx.gen.context
+    mix phx.gen.html, phx.gen.json, dino.gen.live, and dino.gen.context
     expect a context module name, followed by singular and plural names
     of the generated resource, ending with any number of attributes.
     For example:

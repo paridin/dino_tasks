@@ -3,7 +3,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
 
   @moduledoc """
   Generates controller, views, and context for an HTML resource.
-      mix phx.gen.html Accounts User users name:string age:integer
+      mix dino.gen.html Accounts User users name:string age:integer
   The first argument is the context module followed by the schema module
   and its plural name (used as the schema table name).
   The context is an Elixir module that serves as an API boundary for
@@ -14,7 +14,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   > over distinct contexts (such as `Accounts.User` and `Payments.User`).
   The schema is responsible for mapping the database fields into an
   Elixir struct. It is followed by an optional list of attributes,
-  with their respective names and types. See `mix phx.gen.schema`
+  with their respective names and types. See `mix dino.gen.schema`
   for more information on attributes.
   Overall, this generator will add the following files to `lib/`:
     * a context module in `lib/app/accounts.ex` for the accounts API
@@ -36,12 +36,12 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   Example configuration:
       config :my_app_web, :generators, context_app: :my_app
   Alternatively, the `--context-app` option may be supplied to the generator:
-      mix phx.gen.html Sales User users --context-app warehouse
+      mix dino.gen.html Sales User users --context-app warehouse
   ## Web namespace
   By default, the controller and view will be namespaced by the schema name.
   You can customize the web module namespace by passing the `--web` flag with a
   module name, for example:
-      mix phx.gen.html Sales User users --web Sales
+      mix dino.gen.html Sales User users --web Sales
   Which would generate a `lib/app_web/controllers/sales/user_controller.ex` and
   `lib/app_web/views/sales/user_view.ex`.
   ## Customising the context, schema, tables and migrations
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   or schema to yourself. You can use the `--no-context` and `--no-schema`
   flags for file generation control.
   You can also change the table name or configure the migrations to
-  use binary ids for primary keys, see `mix phx.gen.schema` for more
+  use binary ids for primary keys, see `mix dino.gen.schema` for more
   information.
   """
   use Mix.Task
@@ -61,14 +61,14 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   @doc false
   def run(args) do
     if Mix.Project.umbrella?() do
-      Mix.raise "mix phx.gen.html can only be run inside an application directory"
+      Mix.raise "mix dino.gen.html can only be run inside an application directory"
     end
 
     {context, schema} = Gen.Context.build(args)
     Gen.Context.prompt_for_code_injection(context)
 
     binding = [context: context, schema: schema, inputs: inputs(schema)]
-    paths = Mix.Phoenix.generator_paths()
+    paths = Mix.Phoenix.generator_paths() ++ [:dino_tasks]
 
     prompt_for_conflicts(context)
 
