@@ -29,8 +29,12 @@ defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, cont
           <%= error %>
         </div>
         <% end %>
-        <%%= submit "Save", phx_disable_with: "Saving...",
-          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" %>
+        <div class="flex justify-end my-6">
+          <span class="inline-flex rounded-md shadow-sm">
+            <%%= submit "Save", phx_disable_with: "Saving...",
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700 transition ease-in-out duration-150" %>
+          </span>
+        </div>
       </form>
     </div>
     """
