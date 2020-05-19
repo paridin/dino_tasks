@@ -169,7 +169,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   end
 
   defp label(key) do
-    ~s(<%= label f, #{inspect(key)}, class: "block text-sm font-medium leading-5 text-gray-700" do %>#{inspect(key)}<% end %>)
+    ~s(<%= label f, #{inspect(key)}, class: "block text-sm font-medium leading-5 text-gray-700" do %>#{Phoenix.Naming.humanize(Atom.to_string(key))}<% end %>)
   end
 
   defp error(field) do
@@ -177,46 +177,46 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   end
 
   defp number_input(:integer, key) do
-    ~s(<%= number_input f, #{inspect(key)}, class: "block w-full pr-12 form-input pl-7 sm:text-sm sm:leading-5", placeholder: "0", aria_describedby: "#{inspect(key)}" %>)
+    ~s(<%= number_input f, #{inspect(key)}, class: "block w-full mt-1 focus:border-green-300 focus:shadow-outline-green form-input sm:text-sm sm:leading-5", placeholder: "0", aria_describedby: "#{inspect(key)}" %>)
   end
 
   defp number_input(_, key) do
-    ~s(<%= number_input f, #{inspect(key)}, step: "any", class: "block w-full pr-12 form-input pl-7 sm:text-sm sm:leading-5", placeholder: "0", aria_describedby: "#{inspect(key)}" %>)
+    ~s(<%= number_input f, #{inspect(key)}, step: "any", class: "block w-full mt-1 focus:border-green-300 focus:shadow-outline-green form-input sm:text-sm sm:leading-5", placeholder: "0", aria_describedby: "#{inspect(key)}" %>)
   end
 
   defp checkbox(key) do
-    ~s(<%= checkbox f, #{inspect(key)}, class: "w-4 h-4 text-indigo-600 transition duration-150 ease-in-out form-checkbox focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700" %>)
+    ~s(<%= checkbox f, #{inspect(key)}, class: "w-4 h-4 text-green-600 transition duration-150 ease-in-out form-checkbox focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700" %>)
   end
 
   defp textarea(key) do
-    ~s(<%= textarea f, #{inspect(key)}, class: "form-textarea block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
+    ~s(<%= textarea f, #{inspect(key)}, class: "form-textarea block w-full mt-1 focus:border-green-300 focus:shadow-outline-green transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
   end
 
   defp date(key) do
-    ~s(<%= date_select f, #{inspect(key)}, class: "form-input block w-full pl-10 sm:text-sm sm:leading-5" %>)
+    ~s(<%= date_select f, #{inspect(key)}, class: "form-input block w-full mt-1 focus:border-green-300 focus:shadow-outline-green sm:text-sm sm:leading-5" %>)
   end
 
   defp time(key) do
-    ~s(<%= time_select f, #{inspect(key)}, class: "form-input block w-full pl-10 sm:text-sm sm:leading-5" %>)
+    ~s(<%= time_select f, #{inspect(key)}, class: "form-input block w-full sm:text-sm sm:leading-5" %>)
   end
 
   defp utc_dateime(key) do
-    ~s(<%= datetime_select f, #{inspect(key)}, class: "form-input block w-full pl-10 sm:text-sm sm:leading-5" %>)
+    ~s(<%= datetime_select f, #{inspect(key)}, class: "form-input block w-full mt-1 focus:border-green-300 focus:shadow-outline-green sm:text-sm sm:leading-5" %>)
   end
 
   defp naive_datetime(key) do
-    ~s(<%= datetime_select f, #{inspect(key)}, class: "form-input block w-full pl-10 sm:text-sm sm:leading-5" %>)
+    ~s(<%= datetime_select f, #{inspect(key)}, class: "form-input block w-full mt-1 focus:border-green-300 focus:shadow-outline-green sm:text-sm sm:leading-5" %>)
   end
 
   defp array(:integer, key) do
-    ~s(<%= multiple_select f, #{inspect(key)}, ["1": 1, "2": 2], class: "block form-select w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
+    ~s(<%= multiple_select f, #{inspect(key)}, ["1": 1, "2": 2], class: "block form-select w-full mt-1 focus:border-green-300 focus:shadow-outline-green transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
   end
 
   defp array(_, key) do
-    ~s(<%= multiple_select f, #{inspect(key)}, ["Option 1": "option1", "Option 2": "option2"], class: "block form-select w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
+    ~s(<%= multiple_select f, #{inspect(key)}, ["Option 1": "option1", "Option 2": "option2"], class: "block form-select w-full mt-1 focus:border-green-300 focus:shadow-outline-green transition duration-150 ease-in-out sm:text-sm sm:leading-5" %>)
   end
 
   defp text(key) do
-    ~s(<%= text_input f, #{inspect(key)}, class: "form-input block w-full pl-10 sm:text-sm sm:leading-5" %>)
+    ~s(<%= text_input f, #{inspect(key)}, class: "form-input mt-1 block w-full focus:border-green-300 focus:shadow-outline-green sm:text-sm sm:leading-5", autocomplete: "off" %>)
   end
 end
