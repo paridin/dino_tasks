@@ -51,7 +51,7 @@ defmodule DinoTasks.MixProject do
   def application do
     [
       mod: {DinoTasks.Application, []},
-      extra_applications: [:logger, :runtime_tools, :inets, :os_mon]
+      extra_applications: [:logger]
     ]
   end
 
@@ -69,23 +69,14 @@ defmodule DinoTasks.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_html, "~> 2.14"},
       {:phoenix_live_view, "~> 0.12"},
-      {:phoenix_live_dashboard, "~> 0.2"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
       {:plug_cowboy, "~> 2.1"},
       {:gettext, "~> 0.17"},
       {:jason, "~> 1.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      # if you want to run in a cluster please go a read https://github.com/bitwalker/libcluster
-      # {:libcluster, "~> X.Y"}
       # dev & test apps
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:sobelow, "~> 0.8", only: :dev},
       {:credo, "~> 1.2", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
-      {:floki, ">= 0.0.0", only: :test},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 
