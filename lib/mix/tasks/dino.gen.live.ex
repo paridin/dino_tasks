@@ -73,6 +73,8 @@ defmodule Mix.Tasks.Dino.Gen.Live do
     end
 
     {context, schema} = Gen.Context.build(args)
+    schema = Map.put(schema, :route_helper, schema.plural)
+
     Gen.Context.prompt_for_code_injection(context)
 
     binding = [context: context, schema: schema, inputs: Dino.Gen.Html.inputs(schema)]
@@ -169,25 +171,25 @@ defmodule Mix.Tasks.Dino.Gen.Live do
           scope "/#{schema.web_path}", #{inspect prefix}, as: :#{schema.web_path} do
             pipe_through :browser
             ...
-      #{for line <- live_route_instructions(schema), do: "      #{line}"}
+      #{for line <- live_route_instructions(context, schema), do: "      #{line}"}
           end
       """
     else
       Mix.shell().info """
       Add the live routes to your browser scope in #{Mix.Phoenix.web_path(ctx_app)}/router.ex:
-      #{for line <- live_route_instructions(schema), do: "    #{line}"}
+      #{for line <- live_route_instructions(context, schema), do: "    #{line}"}
       """
     end
     if context.generate?, do: Gen.Context.print_shell_instructions(context)
   end
 
-  defp live_route_instructions(schema) do
+  defp live_route_instructions(context, schema) do
     [
-      ~s|live "/#{schema.plural}", #{inspect(schema.alias)}.Index, :index\n|,
-      ~s|live "/#{schema.plural}/new", #{inspect(schema.alias)}.Index, :new\n|,
-      ~s|live "/#{schema.plural}/:id/edit", #{inspect(schema.alias)}.Index, :edit\n\n|,
-      ~s|live "/#{schema.plural}/:id", #{inspect(schema.alias)}, :show\n|,
-      ~s|live "/#{schema.plural}/:id/show/edit", #{inspect(schema.alias)}, :edit|
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :index, as: :#{schema.plural}_index\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/new", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :new, as: :#{schema.plural}_index\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :edit, as: :#{schema.plural}_index\n\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :show, as: :#{schema.plural}_show\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/show/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :edit, as: :#{schema.plural}_show|
     ]
   end
 end
