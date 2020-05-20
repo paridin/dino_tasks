@@ -63,8 +63,7 @@ defmodule Mix.Tasks.Dino.Gen.Live do
   use Mix.Task
 
   alias Mix.Phoenix.{Context}
-  alias Mix.Tasks.Phx.Gen
-  alias Mix.Tasks.Dino
+  alias Mix.Tasks.Dino.Gen
 
   @doc false
   def run(args) do
@@ -77,7 +76,7 @@ defmodule Mix.Tasks.Dino.Gen.Live do
 
     Gen.Context.prompt_for_code_injection(context)
 
-    binding = [context: context, schema: schema, inputs: Dino.Gen.Html.inputs(schema)]
+    binding = [context: context, schema: schema, inputs: Gen.Html.inputs(schema)]
     paths = Mix.Phoenix.generator_paths() ++ [:dino_tasks]
 
     prompt_for_conflicts(context)
