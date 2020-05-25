@@ -1,4 +1,4 @@
-defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %>LiveTest do
+defmodule <%= inspect context.web_module %>.<%= inspect Module.concat("Live", context.name) %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %>Test do
   use <%= inspect context.web_module %>.ConnCase
 
   import Phoenix.LiveViewTest
