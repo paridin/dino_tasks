@@ -1,6 +1,6 @@
 
   describe "<%= schema.plural %>" do
-    alias <%= inspect schema.module %>
+    alias <%= inspect Module.concat(context.module, "Schema.#{schema.human_singular}") %>
 
     @valid_attrs <%= inspect schema.params.create %>
     @update_attrs <%= inspect schema.params.update %>

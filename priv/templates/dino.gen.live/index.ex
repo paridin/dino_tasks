@@ -5,7 +5,7 @@ defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, cont
   use <%= inspect context.web_module %>, :live_view
 
   alias <%= inspect context.module %>
-  alias <%= inspect schema.module %>
+  alias <%= inspect Module.concat(context.module, "Schema.#{schema.human_singular}") %>
 
   @impl true
   def render(assigns) do

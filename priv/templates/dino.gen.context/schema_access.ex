@@ -7,4 +7,6 @@
   defdelegate create_<%= schema.singular %>(params), to: <%= inspect schema.alias %>
   defdelegate update_<%= schema.singular %>(<%= schema.singular %>, params), to: <%= inspect schema.alias %>
   defdelegate delete_<%= schema.singular %>(<%= schema.singular %>), to: <%= inspect schema.alias %>
+
+  defdelegate change_<%= schema.singular %>(<%= schema.singular %>), to: <%= inspect schema.alias %>
   defdelegate change_<%= schema.singular %>(<%= schema.singular %>, params), to: <%= inspect schema.alias %>
