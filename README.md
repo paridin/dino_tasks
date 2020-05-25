@@ -1,5 +1,7 @@
 # DinoTasks
 
+If you want to add a new task feel free to create a PR.
+
 ### Development
 
 If you don't have a `PostgreSQL` installation on your machine, or your prefers Docker instead.
@@ -50,19 +52,4 @@ By default self-signed certs are invalid, but [mkcert](https://github.com/FiloSo
 ```bash
 mkcert -install
 mkcert -key-file ./priv/ssl/dino_tasks_key.pem -cert-file ./priv/ssl/dino_tasks.pem dino_tasks "*.dino_tasks" localhost 127.0.0.1 ::1
-```
-
-### Production
-
-
-### build a docker image (production mode).
-
-```bash
-docker build --build-arg DATABASE_URL=ecto://postgres:postgres@localhost/dino_tasks --build-arg SECRET_KEY_BASE=$(mix phx.gen.secret) --tag dino_tasks:$(grep 'version:' mix.exs | cut -d '"' -f2) .
-```
-
-### run the docker image.
-
-```bash
-docker run --publish 443:443 dino_tasks:$(grep 'version:' mix.exs | cut -d '"' -f2)
 ```
