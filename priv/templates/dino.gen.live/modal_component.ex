@@ -1,4 +1,3 @@
-
 defmodule <%= inspect context.web_module %>.ModalComponent do
   @moduledoc """
   Modal Component
