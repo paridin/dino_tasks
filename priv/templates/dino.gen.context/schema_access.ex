@@ -3,7 +3,7 @@
 
   defdelegate list_<%= schema.plural %>(), to: <%= inspect schema.alias %>
   defdelegate get_<%= schema.singular %>!(id), to: <%= inspect schema.alias %>
-  defdelegate get_<%= schema.singular %>(params), to: <%= inspect schema.alias %>
+  defdelegate get_<%= schema.singular %>(id), to: <%= inspect schema.alias %>
   defdelegate get_<%= schema.singular %>_by(params), to: <%= inspect schema.alias %>
   defdelegate create_<%= schema.singular %>(params), to: <%= inspect schema.alias %>
   defdelegate update_<%= schema.singular %>(<%= schema.singular %>, params), to: <%= inspect schema.alias %>
