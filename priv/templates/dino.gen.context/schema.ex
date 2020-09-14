@@ -25,7 +25,7 @@ defmodule <%= inspect schema.module %> do
       ** (Ecto.NoResultsError)
   """
   def get_<%= schema.singular %>!(id), do: Repo.get!(<%= inspect schema.alias %>, id)
-  def get_<%= schema.singular %>(params), do: Repo.get(<%= inspect schema.alias %>, params)
+  def get_<%= schema.singular %>(id), do: Repo.get(<%= inspect schema.alias %>, id)
   def get_<%= schema.singular %>_by(params), do: Repo.get_by(<%= inspect schema.alias %>, params)
 
   @doc """
