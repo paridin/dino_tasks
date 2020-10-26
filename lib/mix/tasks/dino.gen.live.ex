@@ -184,11 +184,11 @@ defmodule Mix.Tasks.Dino.Gen.Live do
 
   defp live_route_instructions(context, schema) do
     [
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :index, as: :#{schema.plural}_index\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/new", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :new, as: :#{schema.plural}_index\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :edit, as: :#{schema.plural}_index\n\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :show, as: :#{schema.plural}_show\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/show/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :edit, as: :#{schema.plural}_show|
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/new", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :new\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :edit\n\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :show\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/show/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :edit|
     ]
   end
 end
