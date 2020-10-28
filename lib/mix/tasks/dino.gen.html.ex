@@ -61,7 +61,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   @doc false
   def run(args) do
     if Mix.Project.umbrella?() do
-      Mix.raise("mix dino.gen.html can only be run inside an application directory")
+      Mix.raise "mix dino.gen.html must be invoked from within your *_web application root directory"
     end
 
     {context, schema} = Gen.Context.build(args)
@@ -99,21 +99,14 @@ defmodule Mix.Tasks.Dino.Gen.Html do
     web_path = to_string(schema.web_path)
 
     [
-      {:eex, "controller.ex",
-       Path.join([web_prefix, "controllers", web_path, "#{schema.singular}_controller.ex"])},
-      {:eex, "edit.html.eex",
-       Path.join([web_prefix, "templates", web_path, schema.singular, "edit.html.eex"])},
-      {:eex, "form.html.eex",
-       Path.join([web_prefix, "templates", web_path, schema.singular, "form.html.eex"])},
-      {:eex, "index.html.eex",
-       Path.join([web_prefix, "templates", web_path, schema.singular, "index.html.eex"])},
-      {:eex, "new.html.eex",
-       Path.join([web_prefix, "templates", web_path, schema.singular, "new.html.eex"])},
-      {:eex, "show.html.eex",
-       Path.join([web_prefix, "templates", web_path, schema.singular, "show.html.eex"])},
-      {:eex, "view.ex", Path.join([web_prefix, "views", web_path, "#{schema.singular}_view.ex"])},
-      {:eex, "controller_test.exs",
-       Path.join([test_prefix, "controllers", web_path, "#{schema.singular}_controller_test.exs"])}
+      {:eex, "controller.ex",       Path.join([web_prefix, "controllers", web_path, "#{schema.singular}_controller.ex"])},
+      {:eex, "edit.html.eex",       Path.join([web_prefix, "templates", web_path, schema.singular, "edit.html.eex"])},
+      {:eex, "form.html.eex",       Path.join([web_prefix, "templates", web_path, schema.singular, "form.html.eex"])},
+      {:eex, "index.html.eex",      Path.join([web_prefix, "templates", web_path, schema.singular, "index.html.eex"])},
+      {:eex, "new.html.eex",        Path.join([web_prefix, "templates", web_path, schema.singular, "new.html.eex"])},
+      {:eex, "show.html.eex",       Path.join([web_prefix, "templates", web_path, schema.singular, "show.html.eex"])},
+      {:eex, "view.ex",             Path.join([web_prefix, "views", web_path, "#{schema.singular}_view.ex"])},
+      {:eex, "controller_test.exs", Path.join([test_prefix, "controllers", web_path, "#{schema.singular}_controller_test.exs"])},
     ]
   end
 
@@ -128,25 +121,20 @@ defmodule Mix.Tasks.Dino.Gen.Html do
   @doc false
   def print_shell_instructions(%Context{schema: schema, context_app: ctx_app} = context) do
     if schema.web_namespace do
-      Mix.shell().info("""
-      Add the resource to your #{schema.web_namespace} :browser scope in #{
-        Mix.Phoenix.web_path(ctx_app)
-      }/router.ex:
-          scope "/#{schema.web_path}", #{
-        inspect(Module.concat(context.web_module, schema.web_namespace))
-      }, as: :#{schema.web_path} do
+      Mix.shell().info """
+      Add the resource to your #{schema.web_namespace} :browser scope in #{Mix.Phoenix.web_path(ctx_app)}/router.ex:
+          scope "/#{schema.web_path}", #{inspect Module.concat(context.web_module, schema.web_namespace)}, as: :#{schema.web_path} do
             pipe_through :browser
             ...
-            resources "/#{schema.plural}", #{inspect(schema.alias)}Controller
+            resources "/#{schema.plural}", #{inspect schema.alias}Controller
           end
-      """)
+      """
     else
-      Mix.shell().info("""
+      Mix.shell().info """
       Add the resource to your browser scope in #{Mix.Phoenix.web_path(ctx_app)}/router.ex:
-          resources "/#{schema.plural}", #{inspect(schema.alias)}Controller
-      """)
+          resources "/#{schema.plural}", #{inspect schema.alias}Controller
+      """
     end
-
     if context.generate?, do: Gen.Context.print_shell_instructions(context)
   end
 
@@ -155,7 +143,6 @@ defmodule Mix.Tasks.Dino.Gen.Html do
     Enum.map(schema.attrs, fn
       {_, {:references, _}} ->
         {nil, nil, nil}
-
       {key, :integer} ->
         {label(key), number_input(key, :integer), error(key)}
 
@@ -178,7 +165,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
         {label(key), time(key), error(key)}
 
       {key, :utc_datetime} ->
-        {label(key), utc_dateime(key), error(key)}
+        {label(key), utc_datetime(key), error(key)}
 
       {key, :naive_datetime} ->
         {label(key), naive_datetime(key), error(key)}
@@ -232,7 +219,7 @@ defmodule Mix.Tasks.Dino.Gen.Html do
     ~s(<%= time_select f, #{inspect(key)}, class: "form-input block w-full sm:text-sm sm:leading-5" %>)
   end
 
-  defp utc_dateime(key) do
+  defp utc_datetime(key) do
     ~s(<%= datetime_select f, #{inspect(key)}, class: "form-input block w-full mt-1 focus:border-green-300 focus:shadow-outline-green sm:text-sm sm:leading-5" %>)
   end
 

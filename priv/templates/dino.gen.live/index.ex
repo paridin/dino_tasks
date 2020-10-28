@@ -48,7 +48,7 @@ defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, cont
                 </tr>
               </thead>
               <tbody id="<%= schema.plural %>">
-                <%%= for <%= schema.singular %> <- @<%= schema.plural %> do %>
+                <%%= for <%= schema.singular %> <- @<%= schema.collection %> do %>
                   <tr id="<%= schema.singular %>-<%%= <%= schema.singular %>.id %>">
                     <%= for {k, _} <- schema.attrs do %>
                     <td class="px-6 py-4 text-sm font-medium leading-5 text-gray-500"><%%= <%= schema.singular %>.<%= k %> %></td>
@@ -71,7 +71,7 @@ defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, cont
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :<%= schema.plural %>, list_<%= schema.plural %>())}
+    {:ok, assign(socket, :<%= schema.collection %>, list_<%= schema.plural %>())}
   end
 
   @impl true
@@ -102,7 +102,7 @@ defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, cont
     <%= schema.singular %> = <%= inspect context.alias %>.get_<%= schema.singular %>!(id)
     {:ok, _} = <%= inspect context.alias %>.delete_<%= schema.singular %>(<%= schema.singular %>)
 
-    {:noreply, assign(socket, :<%= schema.plural %>, list_<%=schema.plural %>())}
+    {:noreply, assign(socket, :<%= schema.collection %>, list_<%=schema.plural %>())}
   end
 
   defp list_<%= schema.plural %> do

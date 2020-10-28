@@ -18,7 +18,6 @@ defmodule Mix.Tasks.Dino do
 
   defp general() do
     Application.ensure_all_started(:phoenix)
-    IO.inspect("I'm called")
     Mix.shell().info "Phoenix v#{Application.spec(:phoenix, :vsn)}"
     Mix.shell().info "Productive. Reliable. Fast."
     Mix.shell().info "A productive web framework that does not compromise speed or maintainability."

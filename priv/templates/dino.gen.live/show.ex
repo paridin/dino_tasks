@@ -1,4 +1,4 @@
-defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, context.name) %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %> do
+defmodule <%= inspect context.web_module %>.<%= inspect Module.concat(Live, context.name) %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %>.Show do
   @moduledoc """
   live view for <%= inspect Module.concat(schema.web_namespace, schema.alias) %>
   """

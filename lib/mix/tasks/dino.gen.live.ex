@@ -1,5 +1,5 @@
 defmodule Mix.Tasks.Dino.Gen.Live do
-  @shortdoc "Generates LiveView, templates (using tailwind styles), and context for a resource"
+  @shortdoc "Generates LiveView, templates, and context for a resource"
 
   @moduledoc """
   Generates LiveView, templates, and context for a resource.
@@ -68,11 +68,13 @@ defmodule Mix.Tasks.Dino.Gen.Live do
   @doc false
   def run(args) do
     if Mix.Project.umbrella?() do
-      Mix.raise "mix dino.gen.live can only be run inside an application directory"
+      Mix.raise "mix dino.gen.live must be invoked from within your *_web application root directory"
     end
 
     {context, schema} = Gen.Context.build(args)
-    schema = Map.put(schema, :route_helper, schema.plural)
+
+    route_helper = "#{schema.collection |> String.split("_") |> hd()}_#{schema.route_helper}"
+    schema = Map.put(schema, :route_helper, route_helper)
 
     Gen.Context.prompt_for_code_injection(context)
 
@@ -107,7 +109,7 @@ defmodule Mix.Tasks.Dino.Gen.Live do
     live_subdir = "#{String.downcase(name)}/#{schema.singular}"
 
     [
-      {:eex, "show.ex",                   Path.join([web_prefix, "live", web_path, live_subdir, "#{schema.singular}.ex"])},
+      {:eex, "show.ex",                   Path.join([web_prefix, "live", web_path, live_subdir, "show.ex"])},
       {:eex, "index.ex",                  Path.join([web_prefix, "live", web_path, live_subdir, "index.ex"])},
       {:eex, "form_component.ex",         Path.join([web_prefix, "live", web_path, live_subdir, "form_component.ex"])},
       {:eex, "live_test.exs",             Path.join([test_prefix, "live", web_path, live_subdir, "#{schema.singular}_live_test.exs"])},
@@ -184,11 +186,11 @@ defmodule Mix.Tasks.Dino.Gen.Live do
 
   defp live_route_instructions(context, schema) do
     [
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :index\n|,
       ~s|live "/#{String.replace(schema.plural, "_", "/")}/new", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :new\n|,
       ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Index, :edit\n\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :show\n|,
-      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/show/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}, :edit|
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Show, :show\n|,
+      ~s|live "/#{String.replace(schema.plural, "_", "/")}/:id/show/edit", #{inspect(Module.concat(Live, context.name))}.#{inspect(Module.concat(schema.web_namespace, schema.alias))}.Show, :edit|
     ]
   end
 end

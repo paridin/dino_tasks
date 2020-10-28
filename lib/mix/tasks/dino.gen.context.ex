@@ -58,7 +58,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
   @doc false
   def run(args) do
     if Mix.Project.umbrella?() do
-      Mix.raise "mix dino.gen.context can only be run inside an application directory"
+      Mix.raise "mix dino.gen.context must be invoked from within your *_web application root directory"
     end
 
     {context, schema} = build(args)
@@ -118,6 +118,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
     inject_schema_access(context, paths, binding)
     inject_schema_file(context, paths, binding)
     inject_tests(context, paths, binding)
+    inject_test_fixture(context, paths, binding)
 
     context
   end
@@ -149,6 +150,16 @@ defmodule Mix.Tasks.Dino.Gen.Context do
     paths
     |> Mix.Phoenix.eval_from("priv/templates/dino.gen.context/test_cases.exs", binding)
     |> inject_eex_before_final_end(test_file, binding)
+  end
+
+  defp inject_test_fixture(%Context{test_fixtures_file: test_fixtures_file} = context, paths, binding) do
+    unless Context.pre_existing_test_fixtures?(context) do
+      Mix.Generator.create_file(test_fixtures_file, Mix.Phoenix.eval_from(paths, "priv/templates/dino.gen.context/fixtures_module.ex", binding))
+    end
+
+    paths
+    |> Mix.Phoenix.eval_from("priv/templates/dino.gen.context/fixtures.ex", binding)
+    |> inject_eex_before_final_end(test_fixtures_file, binding)
   end
 
   defp inject_eex_before_final_end(content_to_inject, file_path, binding) do
@@ -226,6 +237,7 @@ defmodule Mix.Tasks.Dino.Gen.Context do
     """
   end
 
+  def prompt_for_code_injection(%Context{generate?: false}), do: :ok
   def prompt_for_code_injection(%Context{} = context) do
     if Context.pre_existing?(context) do
       function_count = Context.function_count(context)

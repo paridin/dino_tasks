@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Dino.Gen.Schema do
   @doc false
   def run(args) do
     if Mix.Project.umbrella?() do
-      Mix.raise "mix dino.gen.schema can only be run inside an application directory"
+      Mix.raise "mix dino.gen.schema must be invoked from within your *_web application root directory"
     end
 
     schema = build(args, [])
